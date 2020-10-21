@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/ElliotRedhead/LearningNode/issues"
   },
-  "homepage": "https://github.com/ElliotRedhead/LearningNode#readme"
+  "homepage": "https://github.com/ElliotRedhead/LearningNode#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.11.0",
+    "eslint-plugin-react": "^7.21.5"
+  }
 }
