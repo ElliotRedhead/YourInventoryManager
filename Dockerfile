@@ -13,3 +13,6 @@ CMD ["node", "index.js"]
 
 # docker build -t <username>/learningnode .
 # docker run -p 3000:3000 -d <username>/learningnode
+# docker exec -it <containerid> /bin/bash
+
+#https://semaphoreci.com/community/tutorials/dockerizing-a-node-js-web-application
