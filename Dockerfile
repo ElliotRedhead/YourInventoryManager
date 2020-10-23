@@ -9,7 +9,7 @@ RUN ["yarn", "install"]
 COPY . .
 
 EXPOSE 3000
-CMD ["node", "index.js"]
+CMD ["yarn", "pm2"]
 
 # docker build -t <username>/learningnode .
 # docker run -p 3000:3000 -d <username>/learningnode
