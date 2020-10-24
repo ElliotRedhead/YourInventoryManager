@@ -25,5 +25,5 @@ services:
 
 volumes:
   learningnode-db:
-# docker-compose run addressbook npm run migrate (run migrations within container to build image, create persistent data volume and create table)
+# docker-compose run learningnode npm run migrate (run migrations within container to build image, create persistent data volume and create table)
 # docker-compose up
