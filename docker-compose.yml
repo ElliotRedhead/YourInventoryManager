@@ -10,7 +10,7 @@ services:
     volumes:
       - learningnode-db:/var/lib/postgresql/data
 
-  addressbook:
+  learningnode:
     build:
       context: .
     environment:
@@ -25,3 +25,5 @@ services:
 
 volumes:
   learningnode-db:
+# docker-compose run addressbook npm run migrate (run migrations within container to build image, create persistent data volume and create table)
+# docker-compose up
