@@ -5,7 +5,7 @@ beforeAll(async () => {
 
 test('create product', async () => {
     expect.assertions(1);
-    const person = await db.Product.create({
+    const product = await db.Product.create({
         id: 1,
         name:"milk",
         quantity:1,
@@ -13,7 +13,7 @@ test('create product', async () => {
         storageLocation:"fridge",
         freezable:false
     });
-    expect(person.id).toEqual(1);
+    expect(product.id).toEqual(1);
 });
 
 test('get product', async () => {
