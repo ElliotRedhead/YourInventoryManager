@@ -3,9 +3,9 @@ var router = express.Router();
 var db = require('../database');
 
 router.get("/all", function(req, res) {
-    db.Person.findAll()
-        .then( persons => {
-            res.status(200).send(JSON.stringify(persons));
+    db.Product.findAll()
+        .then( products => {
+            res.status(200).send(JSON.stringify(products));
         })
         .catch( err => {
             res.status(500).send(JSON.stringify(err));
@@ -13,9 +13,9 @@ router.get("/all", function(req, res) {
 });
 
 router.get("/:id", function(req, res) {
-    db.Person.findByPk(req.params.id)
-        .then( person => {
-            res.status(200).send(JSON.stringify(person));
+    db.Product.findByPk(req.params.id)
+        .then( product => {
+            res.status(200).send(JSON.stringify(product));
         })
         .catch( err => {
             res.status(500).send(JSON.stringify(err));
@@ -23,13 +23,16 @@ router.get("/:id", function(req, res) {
 });
 
 router.put("/", function(req, res) {
-    db.Person.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+    db.Product.create({
+        name: req.body.name,
+        quantity: req.body.quantity,
+        expiryDate: req.body.expiryDate,
+        storageLocation: req.body.storageLocation,
+        freezable: req.body.freezable,
         id: req.body.id
         })
-        .then( person => {
-            res.status(200).send(JSON.stringify(person));
+        .then( product => {
+            res.status(200).send(JSON.stringify(product));
         })
         .catch( err => {
             res.status(500).send(JSON.stringify(err));
@@ -37,7 +40,7 @@ router.put("/", function(req, res) {
 });
 
 router.delete("/:id", function(req, res) {
-    db.Person.destroy({
+    db.Product.destroy({
         where: {
             id: req.params.id
         }

@@ -14,6 +14,7 @@ const sequelize = process.env.DATABASE_URL ? new Sequelize(
     }
   ) : new Sequelize(
     "postgres",
+    "postgres",
     "password",
     {
       host:'localhost',
@@ -26,18 +27,31 @@ const sequelize = process.env.DATABASE_URL ? new Sequelize(
   )
                             
 
-const Person = sequelize.define('Person', {
-    firstName: {
-        type: Sequelize.STRING,
-        allowNull: false
+const Product = sequelize.define('Product', {
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false
     },
-    lastName: {
-        type: Sequelize.STRING,
-        allowNull: true
+    quantity: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
     },
+    expiryDate: {
+      type: Sequelize.DATEONLY,
+      allowNull: true
+    },
+    storageLocation: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    freezable: {
+      type: Sequelize.BOOLEAN,
+      default: false,
+      allowNull: false
+    }
 });
 
 module.exports = {
   sequelize: sequelize,
-  Person: Person
+  Product: Product
 };

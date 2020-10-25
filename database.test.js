@@ -1,35 +1,40 @@
 const db = require('./database');
-
 beforeAll(async () => {
     await db.sequelize.sync();
 });
 
-test('create person', async () => {
+test('create product', async () => {
     expect.assertions(1);
-    const person = await db.Person.create({
+    const person = await db.Product.create({
         id: 1,
-        firstName: 'Elliot',
-        lastName: 'Redhead'
+        name:"milk",
+        quantity:1,
+        expiryDate:"2020-10-28",
+        storageLocation:"fridge",
+        freezable:false
     });
     expect(person.id).toEqual(1);
 });
 
-test('get person', async () => {
-    expect.assertions(2);
-    const person = await db.Person.findByPk(1);
-    expect(person.firstName).toEqual('Elliot');
-    expect(person.lastName).toEqual('Redhead');
+test('get product', async () => {
+    expect.assertions(5);
+    const product = await db.Product.findByPk(1);
+    expect(product.name).toEqual("milk");
+    expect(product.quantity).toEqual(1);
+    expect(product.expiryDate).toEqual("2020-10-28");
+    expect(product.storageLocation).toEqual("fridge");
+    expect(product.freezable).toEqual(false);
 });
 
-test('delete person', async () => {
+test('delete product', async () => {
     expect.assertions(1);
-    await db.Person.destroy({
+    await db.Product.destroy({
         where: {
             id: 1
         }
     });
-    const person = await db.Person.findByPk(1);
-    expect(person).toBeNull();
+    const product = await db.Product.findByPk(1);
+    expect(product).toBeNull();
 });
 
 afterAll(async () => {
