@@ -1,41 +1,57 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
-if (process.env.ENVIRONMENT == "development"){
-  const sequelize = new Sequelize(
-    process.env.DB_SCHEMA || 'postgres',
-    process.env.DB_USER || 'postgres',
-    process.env.DB_PASSWORD || '',
-    {
-        host: process.env.DB_HOST || 'localhost',
-        port: process.env.DB_PORT || 5432,
-        dialect: 'postgres',
-        dialectOptions: {
-            ssl: process.env.DB_SSL == "true"
+const sequelize = process.env.DATABASE_URL ? new Sequelize(
+  process.env.DATABASE_URL,
+  {
+      dialect: 'postgres',
+      dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false
         }
-    });
-} else if (process.env.ENVIRONMENT == "production"){
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
-    protocol: 'postgres',
-    dialectOptions: {
-        ssl: true
+      }
     }
-});
-}
+  ) : new Sequelize(
+    "postgres",
+    "postgres",
+    "password",
+    {
+      host:'localhost',
+      port:5432,
+      dialect:"postgres",
+      dialectOptions: {
+        ssl: process.env.DB_SSL == "true"
+      }
+    }
+  )
+                            
 
-const Person = sequelize.define('Person', {
-    firstName: {
-        type: Sequelize.STRING,
-        allowNull: false
+const Product = sequelize.define('Product', {
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false
     },
-    lastName: {
-        type: Sequelize.STRING,
-        allowNull: true
+    quantity: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
     },
+    expiryDate: {
+      type: Sequelize.DATEONLY,
+      allowNull: true
+    },
+    storageLocation: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    freezable: {
+      type: Sequelize.BOOLEAN,
+      default: false,
+      allowNull: false
+    }
 });
 
 module.exports = {
-    sequelize: sequelize,
-    Person: Person
+  sequelize: sequelize,
+  Product: Product
 };
