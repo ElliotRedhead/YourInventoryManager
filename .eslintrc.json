@@ -1,8 +1,7 @@
 {
     "env": {
         "browser": true,
-        "es2020": true,
-        "amv": true
+        "es2020": true
     },
     "extends": [
         "eslint:recommended",
