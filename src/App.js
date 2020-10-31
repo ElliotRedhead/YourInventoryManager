@@ -1,55 +1,34 @@
-// import { useEffect } from "react";
-import { useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useEffect, useState } from "react";
 
 const App = () => {
-
-	const [fetchData, setFetchData] = useState("Test data");
-
-	const fetch = () => {
-		fetch("https://localhost:5000/products/all")
-			.then(response => {
-				if (!response.ok) {console.log(response);
-				} else {
-					return response;
-          
-				}
-			})
-			.then(response =>{ if(response){return response.json();}})
-			.then(
-				(results) => {
-					setFetchData(results);
-				}
-			);
+	// Products list state management
+	const [productsList, setProductsList] = useState("");
+	
+	const fetchProducts = async () => {
+		const products = await fetch("/products/all")
+			.then(res => res.json()); // Process the incoming data
+		setProductsList(products);
 	};
 
-	
+	if(typeof productsList === "object" && productsList !== null){
+		Object.keys(productsList).map((item) => {
+			console.log(productsList[item]);
+			const record = productsList[item];
+			for(const [key, value] of Object.entries(record)) {
+				console.log(`${key}: ${value}`);
+				<p>{`${key}: ${value}`}</p>;
+			}
+		});
+	}
 
-	// const fetch = () => {
-	// 	fetch("http://localhost:5000/products/all")
-	// 		.then(res => {if (res){res.json();}})
-	// 		.then(data => setFetchData(data));
-	// };
-  
+	// useEffect fetches products on initial render only.
+	useEffect(() => {
+		fetchProducts();
+	}, []);
+
 	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<button onClick={fetch}>Fetch those products.</button>
-				<p>{fetchData}</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
+		<div className="app">
+			<p>React app render successful, check console logs for current work state.</p>
 		</div>
 	);
 };
