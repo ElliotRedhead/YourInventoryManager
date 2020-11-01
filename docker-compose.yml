@@ -8,11 +8,11 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - learningnode-db:/var/lib/postgresql/data
+      - postgres-db:/var/lib/postgresql/data
 
-  learningnode:
+  express-api:
     build:
-      context: .
+      context: ./api
     environment:
       DB_SCHEMA: postgres
       DB_USER: postgres
@@ -21,9 +21,9 @@ services:
     depends_on:
       - postgres
     ports:
-      - "3000:3000"
+      - "5000:5000"
 
 volumes:
-  learningnode-db:
+  postgres-db:
 # docker-compose run learningnode npm run migrate (run migrations within container to build image, create persistent data volume and create table)
 # docker-compose up

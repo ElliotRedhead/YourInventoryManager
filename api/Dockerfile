@@ -1,15 +1,15 @@
-FROM node:10
 
-WORKDIR /usr/src/learningnode
-COPY package*.json ./
-COPY yarn.lock ./
-
-RUN ["yarn", "install"]
-
+FROM node:10.16.0-alpine
+RUN mkdir -p /opt/app
+WORKDIR /opt/app
+RUN adduser --disabled-password app
 COPY . .
+RUN chown -R app:app /opt/app
+USER app
+RUN npm install
+EXPOSE 5000
+CMD [ "npm", "run", "start" ]
 
-EXPOSE 3000
-CMD ["yarn", "pm2"]
 
 # docker build -t <username>/learningnode .
 # docker run -p 3000:3000 -d <username>/learningnode

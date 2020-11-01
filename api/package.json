@@ -1,5 +1,5 @@
 {
-    "name": "learningnode",
+    "name": "express-api",
     "version": "0.0.0",
     "scripts": {
         "pm2": "pm2 start processes.json --no-daemon",
@@ -30,7 +30,6 @@
         "sequelize": "^6.3.5"
     },
     "devDependencies": {
-        "eslint": "^7.11.0",
-        "eslint-plugin-react": "^7.21.5"
+        "eslint": "^7.11.0"
     }
 }
