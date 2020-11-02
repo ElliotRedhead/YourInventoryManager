@@ -2,7 +2,7 @@ require("dotenv").config();
 const Sequelize = require("sequelize");
 
 const sequelize = process.env.DATABASE_URL ? new Sequelize(
-	process.env.DATABASE_URL,
+	process.env.DATABASE_URL, null, null,
 	{
 		dialect: "postgres",
 		dialectOptions: {
@@ -13,15 +13,15 @@ const sequelize = process.env.DATABASE_URL ? new Sequelize(
 		}
 	}
 ) : new Sequelize(
-	"postgres",
-	"postgres",
-	"password",
+	process.env.DB_SCHEMA || "postgres",
+	process.env.DB_USER || "postgres",
+	process.env.DB_PASSWORD || "",
 	{
-		host:"localhost",
-		port:5432,
+		host:process.env.DB_HOST || "localhost",
+		port:process.env.DB_PORT || 5432,
 		dialect:"postgres",
 		dialectOptions: {
-			ssl: process.env.DB_SSL == "true"
+			ssl: process.env.DB_SSL == "true",
 		}
 	}
 );
