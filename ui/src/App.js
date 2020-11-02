@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+	// Products list state management
+	const [productsList, setProductsList] = useState("");
+	
+	const fetchProducts = async () => {
+		const products = await fetch("/products/all")
+			.then(res => res.json()); // Process the incoming data
+		setProductsList(products);
+	};
+
+	if(typeof productsList === "object" && productsList !== null){
+		Object.keys(productsList).map((item) => {
+			console.log(productsList[item]);
+			const record = productsList[item];
+			for(const [key, value] of Object.entries(record)) {
+				console.log(`${key}: ${value}`);
+				<p>{`${key}: ${value}`}</p>;
+			}
+		});
+	}
+
+	// useEffect fetches products on initial render only.
+	useEffect(() => {
+		fetchProducts();
+	}, []);
+
+	return (
+		<div className="app">
+			<p>React app render successful, check console logs for current work state.</p>
+		</div>
+	);
+};
 
 export default App;
