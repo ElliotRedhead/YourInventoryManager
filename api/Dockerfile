@@ -1,14 +1,10 @@
-
-FROM node:10.16.0-alpine
-RUN mkdir -p /opt/app
-WORKDIR /opt/app
-RUN adduser --disabled-password app
-COPY . .
-RUN chown -R app:app /opt/app
-USER app
+FROM node:12
+WORKDIR /usr/src/app
+COPY package*.json ./
 RUN npm install
+COPY . .
 EXPOSE 5000
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "pm2" ]
 
 
 # docker build -t <username>/learningnode .

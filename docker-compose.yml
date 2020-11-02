@@ -23,6 +23,14 @@ services:
     ports:
       - "5000:5000"
 
+  react-ui:
+    build:
+      context: ./ui
+    depends_on:
+      - express-api
+    ports:
+      - "3000:3000"
+
 volumes:
   postgres-db:
 # docker-compose run express-api npm run migrate (run migrations within container to build image, create persistent data volume and create table)
