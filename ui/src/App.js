@@ -6,11 +6,13 @@ const App = () => {
 	
 	const fetchProducts = async () => {
 		const products = await fetch("/products/all")
+			.then(res =>{console.log(res); return res;}) 
 			.then(res => res.json()); // Process the incoming data
+		console.log(products);
 		setProductsList(products);
 	};
 
-	if(typeof productsList === "object" && productsList !== null){
+	if(typeof productsList === "object" && productsList !== null){ //eslint-disable-next-line
 		Object.keys(productsList).map((item) => {
 			console.log(productsList[item]);
 			const record = productsList[item];
