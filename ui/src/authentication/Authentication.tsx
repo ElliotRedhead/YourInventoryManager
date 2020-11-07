@@ -1,9 +1,10 @@
 import React from "react";
+import { Card } from "react-bootstrap";
 
 const Authentication = () => {
 	
 	return (
-		<p>Authentication contents to go here.</p>
+		<Card>Authentication contents to go here.</Card>
 	);
 };
 
