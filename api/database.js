@@ -26,6 +26,24 @@ const sequelize = process.env.DATABASE_URL ? new Sequelize(
 	}
 );
                             
+const User = sequelize.define("User", {
+	username: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
+	password_digest: {
+		type: Sequelize.STRING,
+		allowNull: false
+	},
+	email: {
+		type: Sequelize.STRING,
+		allowNull: true
+	},
+	token: {
+		type: Sequelize.STRING,
+		allowNull: true
+	}
+})
 
 const Product = sequelize.define("Product", {
 	name: {
@@ -53,5 +71,6 @@ const Product = sequelize.define("Product", {
 
 module.exports = {
 	sequelize: sequelize,
+	User: User,
 	Product: Product
 };
