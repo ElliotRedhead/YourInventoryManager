@@ -17,4 +17,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", homeRouter);
 app.use("/products", productsRouter);
 
+app.use(express.static(path.join(__dirname, 'ui/build')));
+if(process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, 'client/build')));
+	app.get('*', (req, res) => {    res.sendfile(path.join(__dirname = 'client/build/index.html'));  })
+}
+app.get('*', (req, res) => {  res.sendFile(path.join(__dirname+'/ui/public/index.html'));})
+
+
 module.exports = app;

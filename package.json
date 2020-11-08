@@ -4,5 +4,11 @@
 	"main": "index.js",
 	"repository": "https://github.com/ElliotRedhead/LearningNode",
 	"author": "ElliotRedhead <elliot.redhead@gmail.com>",
-	"license": "MIT"
+	"license": "MIT",
+	"scripts": {
+		"migrate-db": "cd api && yarn migrate"
+	},
+	"dependencies": {
+		"concurrently": "^5.3.0"
+	}
 }

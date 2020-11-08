@@ -4,8 +4,8 @@ services:
     container_name: postgres
     image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -17,8 +17,8 @@ services:
       context: ./api
     environment:
       DB_SCHEMA: postgres
-      DB_USER: postgres
-      DB_PASSWORD: password
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: postgres
     depends_on:
       - postgres
@@ -28,7 +28,7 @@ services:
   react-ui:
     container_name: react-ui
     build:
-      context: ./ui
+      context: ./client
     depends_on:
       - express-api
     ports:
