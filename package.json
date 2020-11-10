@@ -1,14 +1,16 @@
 {
-	"name": "inventorymanager",
-	"version": "1.0.0",
-	"main": "index.js",
-	"repository": "https://github.com/ElliotRedhead/LearningNode",
-	"author": "ElliotRedhead <elliot.redhead@gmail.com>",
-	"license": "MIT",
-	"scripts": {
-		"migrate-db": "cd api && yarn migrate"
-	},
-	"dependencies": {
-		"concurrently": "^5.3.0"
-	}
+    "name": "inventorymanager",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/ElliotRedhead/LearningNode",
+    "author": "ElliotRedhead <elliot.redhead@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "start": "(cd api && yarn start)",
+        "postinstall": "(cd api && yarn install) && (cd client && yarn install && node scripts/build.js)"
+    },
+    "dependencies": {
+        "concurrently": "^5.3.0",
+        "dotenv": "^8.2.0"
+    }
 }

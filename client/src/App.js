@@ -12,7 +12,7 @@ const App = () => {
 				<Route exact path={"/Authentication"}>
 					<Authentication/>
 				</Route>
-				<Route exact path={"/Inventory"}>
+				<Route exact path={"/"}>
 					<Inventory />
 				</Route>
 			</Switch>
