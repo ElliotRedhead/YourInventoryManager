@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 EXPOSE 5000
-CMD [ "yarn", "server" ]
+CMD [ "yarn", "server", "migrate" ]
 
 
 # docker build -t <username>/learningnode .
