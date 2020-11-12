@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const productsRouter = require("./routes/products");
+const usersRouter = require("./routes/users")
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(require("body-parser").urlencoded({extended:true}));
 app.use(cookieParser());
 
+app.use("/users", usersRouter);
 app.use("/products", productsRouter);
 
 if(process.env.NODE_ENV === 'production') {

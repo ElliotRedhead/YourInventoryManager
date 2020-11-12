@@ -1,9 +1,16 @@
 var express = require("express");
+var passport = require("passport");
+var bcrypt = require("bcrypt");
+
 var router = express.Router();
 
-/* GET users listing. */
-router.get("/", function(req, res, next) {
-	res.send("respond with a resource");
+router.get("/signup", function(request,response){
+	response.status(200).send("Message received");
 });
 
-module.exports = router;
+router.post("/signup", function(request, response) {
+	console.log(request);
+	response.send("A post request was received.")
+});
+
+module.exports = router
