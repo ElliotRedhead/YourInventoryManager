@@ -8,9 +8,9 @@ router.get("/signup", function(request,response){
 	response.status(200).send("Message received");
 });
 
-router.post("/signup", function(request, response) {
-	console.log(request);
-	response.send("A post request was received.")
+router.post("/signup", (request, response) => {
+	console.log(request.body);
+	response.send(request.body)
 });
 
 module.exports = router

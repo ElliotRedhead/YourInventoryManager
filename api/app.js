@@ -4,6 +4,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const productsRouter = require("./routes/products");
 const usersRouter = require("./routes/users")
@@ -13,7 +14,9 @@ const app = express();
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
-app.use(require("body-parser").urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json({extended:true}));
+app.use(bodyParser.text({extended:true}));
 app.use(cookieParser());
 
 app.use("/users", usersRouter);

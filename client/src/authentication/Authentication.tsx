@@ -4,7 +4,10 @@ import { Form, Button } from "react-bootstrap";
 const Authentication = () => {
 	const test = (event:any) => {
 		event.preventDefault();
-		fetch("/users/signup")
+		fetch("/users/signup", {
+			method:"post",
+			body:"test"
+		})
 			.then(response => {
 				console.log(response);
 				return response;
