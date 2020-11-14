@@ -4,6 +4,14 @@ import { Form, Button } from "react-bootstrap";
 const Authentication = () => {
 	const test = (event:any) => {
 		event.preventDefault();
+		fetch("/users/signup")
+			.then(response => {
+				console.log(response);
+				return response;
+			})
+			.then(data=> data.text())
+			.then(servermessage => {console.log(servermessage);})
+			.catch(error=>console.log(error));
 
 		console.log(event);
 	};
