@@ -1,41 +1,53 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 
-const Authentication = () => {
-	const test = (event:any) => {
+const Authentication = () => {	  
+
+	const handleSubmit = (event : any) => {
+		const form = event.currentTarget;
 		event.preventDefault();
-		fetch("/users/signup", {
-			method:"post",
-			body:"test"
-		})
-			.then(response => {
-				console.log(response);
-				return response;
+		if (form.elements !== null){
+			fetch("/users/signup", {
+				method:"post",
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					"username":form.elements.formUsername.value,
+					"email":form.elements.formEmail.value,
+					"password": form.elements.formPassword.value
+				})
 			})
-			.then(data=> data.text())
-			.then(servermessage => {console.log(servermessage);})
-			.catch(error=>console.log(error));
+				.then(response => {
+					console.log(response);
+					return response;
+				})
+				.then(data=> data.text())
+				.then(servermessage => {console.log(servermessage);})
+				.catch(error=>console.log(error));
 
-		console.log(event);
+			console.log(event);
+		}
 	};
-
 	return (
-		<Form onSubmit={test}>
-			  <Form.Group controlId="formBasicEmail">
+		<Form onSubmit={(event) => handleSubmit(event)}>
+			{/* Username field */}
+			<Form.Group controlId="formUsername">
+				<Form.Label>Username</Form.Label>
+				<Form.Control required type="text" placeholder="Username" />
+			</Form.Group>
+			{/* Email address field */}
+			<Form.Group controlId="formEmail">
 				<Form.Label>Email address</Form.Label>
-				<Form.Control type="email" placeholder="Enter email" />
+				<Form.Control type="email" placeholder="Email address" />
 				<Form.Text className="text-muted">
 					We'll never share your email with anyone else.
 				</Form.Text>
 			</Form.Group>
-
-			<Form.Group controlId="formBasicPassword">
+			{/* Password field */}
+			<Form.Group controlId="formPassword">
 				<Form.Label>Password</Form.Label>
 				<Form.Control type="password" placeholder="Password" />
 			</Form.Group>
-			<Form.Group controlId="formBasicCheckbox">
-				<Form.Check type="checkbox" label="Check me out" />
-			</Form.Group>
+			{/* Submit button */}
 			<Button variant="primary" type="submit">
 				Submit
 			</Button>
