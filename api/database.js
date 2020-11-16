@@ -31,15 +31,11 @@ const User = sequelize.define("User", {
 		type: Sequelize.STRING,
 		allowNull: false
 	},
-	password_digest: {
+	password: {
 		type: Sequelize.STRING,
 		allowNull: false
 	},
 	email: {
-		type: Sequelize.STRING,
-		allowNull: true
-	},
-	token: {
 		type: Sequelize.STRING,
 		allowNull: true
 	}
