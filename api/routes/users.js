@@ -12,15 +12,28 @@ router.get("/signup", function(request,response){
 });
 
 router.post("/signup", function (request, response) {
-	bcrypt.hash(request.body.password, saltRounds, function (error, hash) {
-		db.User.create({
+	db.User.findOne({
+		where: {
 			username: request.body.username,
-			email: request.body.email,
-			password: hash
-		})
-	})
+			[or]: {
+				email: request.body.email
+			}
+		}
+	}).then(function(user){
+		if(!user) {
+			bcrypt.hash(request.body.password, saltRounds, function (error, hash) {
+				db.User.create({
+					username: request.body.username,
+					email: request.body.email,
+					password: hash
+				})
+			})
 
-	response.send("User creation successful.")
-});
+			response.send("User creation successful.")
+		} else {
+			response.send("Username already exists.")
+		}
+	});
+})
 
 module.exports = router
