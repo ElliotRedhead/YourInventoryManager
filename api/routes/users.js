@@ -1,5 +1,6 @@
 var express = require("express");
 var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require("bcrypt");
 var db = require("../database");
 // Use more salt rounds in production for greater security.
@@ -41,6 +42,23 @@ router.post("/signup", function (request, response) {
 		.catch(function(error){
 			console.log(error);
 		});
+});
+
+router.post("/login", function(request,response){
+	passport.use(new LocalStrategy(
+		function(username, password, done) {
+			db.User.findOne({ username: username }, function(error, user) {
+				if (error) { return done(error); }
+				if (!user) {
+					return done(null, false, { message: "Incorrect username." });
+				}
+				if (!user.validPassword(password)) {
+					return done(null, false, { message: "Incorrect password." });
+				}
+				return done(null, user);
+			});
+		}
+	));
 });
 
 module.exports = router;
