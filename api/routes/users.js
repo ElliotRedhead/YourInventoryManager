@@ -13,12 +13,11 @@ router.get("/signup", function(request,response){
 
 router.post("/signup", function (request, response) {
 	db.User.findOne({
-		where: {
-			username: request.body.username,
-			[or]: {
-				email: request.body.email
-			}
-		}
+		where:
+			db.sequelize.or(
+				{username: request.body.username},
+				{email: request.body.email}
+			)
 	}).then(function(user){
 		if(!user) {
 			bcrypt.hash(request.body.password, saltRounds, function (error, hash) {
@@ -26,14 +25,22 @@ router.post("/signup", function (request, response) {
 					username: request.body.username,
 					email: request.body.email,
 					password: hash
-				})
-			})
+				});
+			});
 
-			response.send("User creation successful.")
+			response.send("User creation successful.");
 		} else {
-			response.send("Username already exists.")
+			if(user["username"] === request.body.username){
+				response.send("An account with that username already exists.");
+			}
+			else if (user["email"] === request.body.email){
+				response.send("An account with that email already exists.");
+			}
 		}
-	});
-})
+	})
+		.catch(function(error){
+			console.log(error);
+		});
+});
 
-module.exports = router
+module.exports = router;
