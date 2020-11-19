@@ -1,7 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import { Form, Button } from "react-bootstrap";
 
-const Authentication = () => {	  
+const Authentication = () => {
+
+	const [authMode, setAuthMode] = useState("Register");
+	const invertAuthMode = () => {
+		if (authMode === "Register"){
+			setAuthMode("Login")
+		} else {
+			setAuthMode("Register");
+		}
+	}
 
 	const handleSubmit = (event : any) => {
 		const form = event.currentTarget;
@@ -49,9 +58,9 @@ const Authentication = () => {
 			</Form.Group>
 			{/* Submit button */}
 			<Button variant="primary" type="submit">
-				Submit
+				{authMode}
 			</Button>
-
+			<p onClick={invertAuthMode}>{(authMode === "Register") ? "Already registered? Login here." : "Need to sign up? Register here."}</p>
 		</Form>
 	);
 };
