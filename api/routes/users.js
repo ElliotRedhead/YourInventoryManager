@@ -8,11 +8,11 @@ const saltRounds = 10;
 
 var router = express.Router();
 
-router.get("/signup", function(request,response){
+router.get("/register", function(request,response){
 	response.status(200).send("Message received");
 });
 
-router.post("/signup", function (request, response) {
+router.post("/register", function (request, response) {
 	db.User.findOne({
 		where:
 			db.sequelize.or(
@@ -45,6 +45,7 @@ router.post("/signup", function (request, response) {
 });
 
 router.post("/login", function(request,response){
+	console.log("Login request received.");
 	passport.use(new LocalStrategy(
 		function(username, password, done) {
 			db.User.findOne({ username: username }, function(error, user) {

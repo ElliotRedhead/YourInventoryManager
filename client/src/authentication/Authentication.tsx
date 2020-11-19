@@ -16,7 +16,7 @@ const Authentication = () => {
 		const form = event.currentTarget;
 		event.preventDefault();
 		if (form.elements !== null){
-			fetch("/users/signup", {
+			fetch(`/users/${authMode.toLowerCase()}`, {
 				method:"post",
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
