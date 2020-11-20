@@ -8,18 +8,22 @@ const saltRounds = 10;
 
 var router = express.Router();
 
+
+
+
 passport.use("login", new LocalStrategy(
 	function(username, password, done) {
 		db.User.findOne({where: { username: username }}).then(function(user) {
-			console.log(user);
-			console.log(password, user.password);
+			if(!user){
+				return done(null,false);
+			}
 			bcrypt.compare(password,user.password)
-				.then(result => {console.log(result);});
+				.then(result => {
+					if(result){
+						return done(null,user);
+					}
+				});
 		});
-		// if (!isValidPassword(user, password)){
-		// 	console.log("Invalid Password");
-		// 	return done(null, false, { message: "Incorrect password." });
-		// }
 	}
 ));
 

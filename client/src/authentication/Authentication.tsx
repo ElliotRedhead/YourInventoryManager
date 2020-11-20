@@ -29,11 +29,8 @@ const Authentication = () => {
 					console.log(response);
 					return response;
 				})
-				.then(data=> data.text())
-				.then(servermessage => {console.log(servermessage);})
 				.catch(error=>console.log(error));
 
-			console.log(event);
 		}
 	};
 	return (
