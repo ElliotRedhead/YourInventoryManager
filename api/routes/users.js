@@ -8,6 +8,21 @@ const saltRounds = 10;
 
 var router = express.Router();
 
+passport.use("login", new LocalStrategy(
+	function(username, password, done) {
+		db.User.findOne({where: { username: username }}).then(function(user) {
+			console.log(user);
+			console.log(password, user.password);
+			bcrypt.compare(password,user.password)
+				.then(result => {console.log(result);});
+		});
+		// if (!isValidPassword(user, password)){
+		// 	console.log("Invalid Password");
+		// 	return done(null, false, { message: "Incorrect password." });
+		// }
+	}
+));
+
 router.get("/register", function(request,response){
 	response.status(200).send("Message received");
 });
@@ -44,22 +59,11 @@ router.post("/register", function (request, response) {
 		});
 });
 
-router.post("/login", function(request,response){
-	console.log("Login request received.");
-	passport.use(new LocalStrategy(
-		function(username, password, done) {
-			db.User.findOne({ username: username }, function(error, user) {
-				if (error) { return done(error); }
-				if (!user) {
-					return done(null, false, { message: "Incorrect username." });
-				}
-				if (!user.validPassword(password)) {
-					return done(null, false, { message: "Incorrect password." });
-				}
-				return done(null, user);
-			});
-		}
-	));
-});
+router.post("/login", passport.authenticate("login", {
+	successRedirect: "/",
+	failureRedirect: "/login",
+	failureFlash: true
+})
+);
 
 module.exports = router;
