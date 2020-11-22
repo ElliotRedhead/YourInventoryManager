@@ -14,15 +14,16 @@ var router = express.Router();
 passport.use("login", new LocalStrategy(
 	function(username, password, done) {
 		db.User.findOne({where: { username: username }}).then(function(user) {
-			if(!user){
+			if(user){
+				bcrypt.compare(password,user.password)
+					.then(result => {
+						if(result){
+							return done(null,user);
+						}
+					});
+			} else if(!user){
 				return done(null,false);
 			}
-			bcrypt.compare(password,user.password)
-				.then(result => {
-					if(result){
-						return done(null,user);
-					}
-				});
 		});
 	}
 ));
