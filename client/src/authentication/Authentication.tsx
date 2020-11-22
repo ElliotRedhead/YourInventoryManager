@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { Form, Button } from "react-bootstrap";
+import reactCookie from "react-cookie";
 
 const Authentication = () => {
 
@@ -18,7 +19,8 @@ const Authentication = () => {
 		if (form.elements !== null){
 			fetch(`/users/${authMode.toLowerCase()}`, {
 				method:"post",
-				headers: { 'Content-Type': 'application/json' },
+				headers: { "Content-Type": "application/json" },
+				credentials: "include",
 				body: JSON.stringify({
 					"username":form.elements.formUsername.value,
 					"email":form.elements.formEmail.value,
@@ -29,6 +31,8 @@ const Authentication = () => {
 					console.log(response);
 					return response;
 				})
+				.then(data => {return data.text()})
+				.then(parsed => console.log(parsed))
 				.catch(error=>console.log(error));
 
 		}
