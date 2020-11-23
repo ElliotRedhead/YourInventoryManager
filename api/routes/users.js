@@ -70,9 +70,9 @@ router.post("/login", passport.authenticate("login"),
 	function(request, response, next) {
 		// response.cookie("testcookie", request.user.id, {signed: true, expires: new Date(Date.now() + 3600)});
 		// const body = { _id: user._id, email: user.email };
-		const token = jwt.sign({ user: request.body.username }, accessTokenSecret);
+		const token = jwt.sign(request.body.username, accessTokenSecret);
 
-		response.json({ token });
+		response.cookie("sessionjwt", token);
 		next();
 	}
 );
