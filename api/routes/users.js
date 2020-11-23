@@ -3,6 +3,8 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require("bcrypt");
 var db = require("../database");
+const jwt = require("jsonwebtoken");
+const accessTokenSecret = "youraccesstokensecret";
 // Use more salt rounds in production for greater security.
 const saltRounds = 10;
 
@@ -64,11 +66,15 @@ router.post("/register", function (request, response) {
 		});
 });
 
-router.post("/login", passport.authenticate("login", {
-	successRedirect: "/",
-	failureRedirect: "/login",
-	failureFlash: true
-})
+router.post("/login", passport.authenticate("login"),
+	function(request, response, next) {
+		// response.cookie("testcookie", request.user.id, {signed: true, expires: new Date(Date.now() + 3600)});
+		// const body = { _id: user._id, email: user.email };
+		const token = jwt.sign({ user: request.body.username }, accessTokenSecret);
+
+		response.json({ token });
+		next();
+	}
 );
 
 module.exports = router;

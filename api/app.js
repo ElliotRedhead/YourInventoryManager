@@ -6,10 +6,10 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const session = require("cookie-session");
-const helmet = require("helmet");
-const hpp = require("hpp");
-const csurf = require("csurf");
-const limiter = require("express-rate-limit");
+// const helmet = require("helmet");
+// const hpp = require("hpp");
+// const csurf = require("csurf");
+// const limiter = require("express-rate-limit");
 
 const db = require("./database");
 const productsRouter = require("./routes/products");
@@ -17,8 +17,8 @@ const usersRouter = require("./routes/users");
 
 const app = express();
 
-app.use(helmet());
-app.use(hpp());
+// app.use(helmet());
+// app.use(hpp());
 app.use(cors({ origin: true, credentials: true }));
 app.use(logger("dev"));
 app.use(express.json());
@@ -33,8 +33,8 @@ app.use(session({
 	expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
 }));	
 
-app.use(csurf());
-app.use(limiter);
+// app.use(csurf());
+// app.use(limiter);
 app.use(passport.initialize());
 app.use(passport.session());
 
