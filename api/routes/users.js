@@ -30,9 +30,6 @@ passport.use("login", new LocalStrategy(
 	}
 ));
 
-router.get("/register", function(request,response){
-	response.status(200).send("Message received");
-});
 
 router.post("/register", function (request, response) {
 	db.User.findOne({
@@ -68,8 +65,6 @@ router.post("/register", function (request, response) {
 
 router.post("/login", passport.authenticate("login"),
 	function(request, response, next) {
-		// response.cookie("testcookie", request.user.id, {signed: true, expires: new Date(Date.now() + 3600)});
-		// const body = { _id: user._id, email: user.email };
 		const token = jwt.sign(request.body.username, accessTokenSecret);
 
 		response.cookie("sessionjwt", token);
