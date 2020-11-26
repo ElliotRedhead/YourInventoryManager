@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 const Sequelize = require("sequelize");
 
 const sequelize = process.env.DATABASE_URL ? new Sequelize(
@@ -39,7 +39,8 @@ const User = sequelize.define("User", {
 		type: Sequelize.STRING,
 		allowNull: true
 	}
-})
+});
+
 
 const Product = sequelize.define("Product", {
 	name: {
@@ -61,6 +62,14 @@ const Product = sequelize.define("Product", {
 	freezable: {
 		type: Sequelize.BOOLEAN,
 		default: false,
+		allowNull: false
+	}
+});
+
+
+User.hasMany(Product, {
+	foreignKey: {
+		name: "uid",
 		allowNull: false
 	}
 });
