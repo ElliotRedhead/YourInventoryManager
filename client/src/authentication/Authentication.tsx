@@ -6,11 +6,7 @@ const Authentication = () => {
 
 	const [authMode, setAuthMode] = useState("Register");
 	const invertAuthMode = () => {
-		if (authMode === "Register"){
-			setAuthMode("Login")
-		} else {
-			setAuthMode("Register");
-		}
+		authMode === "Register" ? setAuthMode("Login") : setAuthMode("Register");
 	}
 
 	const handleSubmit = (event : any) => {
