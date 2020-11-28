@@ -69,8 +69,8 @@ const Product = sequelize.define("Product", {
 
 User.hasMany(Product, {
 	foreignKey: {
-		name: "uid",
-		allowNull: false
+		name: "User.id",
+		allowNull: true
 	}
 });
 
