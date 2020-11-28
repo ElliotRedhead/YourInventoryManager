@@ -1,9 +1,22 @@
-import React from "react";
-import { Table } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Table, Button } from "react-bootstrap";
 
 const Inventory = () => {
+
+	const handleButton = () => {
+		fetch("/products/all", {
+		})
+			.then(response => {
+				console.log(response);
+				return response;
+			})
+			.then(data => {return data.text()})
+			.then(parsed => console.log(parsed))
+			.catch(error=>console.log(error));
+		}
 	
 	return (
+		<>
 		<Table striped bordered hover>
 			  <thead>
 				<tr>
@@ -28,6 +41,9 @@ const Inventory = () => {
 				</tr>
 			</tbody>
 		</Table>
+		<Button onClick={handleButton}></Button>
+		</>
+
 	);
 };
 
