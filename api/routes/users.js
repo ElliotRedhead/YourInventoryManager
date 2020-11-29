@@ -10,10 +10,7 @@ const saltRounds = 10;
 
 var router = express.Router();
 
-
-
-
-passport.use("login", new LocalStrategy(
+passport.use(new LocalStrategy(
 	function(username, password, done) {
 		db.User.findOne({where: { username: username }}).then(function(user) {
 			if(user){
@@ -63,7 +60,7 @@ router.post("/register", function (request, response) {
 		});
 });
 
-router.post("/login", passport.authenticate("login"),
+router.post("/login", passport.authenticate("local"),
 	function(request, response, next) {
 		const token = jwt.sign(request.body.username, accessTokenSecret);
 
@@ -71,5 +68,15 @@ router.post("/login", passport.authenticate("login"),
 		next();
 	}
 );
+
+router.get("/all", passport.authenticate("local", { session: false }), function(req, res) {
+	db.User.findAll()
+		.then( users => {
+			res.status(200).send(JSON.stringify(users));
+		})
+		.catch( err => {
+			res.status(500).send(JSON.stringify(err));
+		});
+});
 
 module.exports = router;
