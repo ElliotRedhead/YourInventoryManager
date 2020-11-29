@@ -4,7 +4,9 @@ import { Table, Button } from "react-bootstrap";
 const Inventory = () => {
 
 	const handleButton = () => {
+		console.log("Fetching products");
 		fetch("/products/all", {
+			credentials: 'include',
 		})
 			.then(response => {
 				console.log(response);
