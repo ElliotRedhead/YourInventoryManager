@@ -28,9 +28,14 @@ app.use(bodyParser.text({extended:true}));
 app.use(cookieParser("MY SECRET!1"));
 
 app.use(session({
+	resave: false,
 	name: "session",
 	secret: "rfk3r9hfw2",
-	expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
+	expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+	cookie: {
+		httpOnly: false,
+		secure: false,
+	}
 }));	
 
 // app.use(csurf());
@@ -38,15 +43,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(user, callback) {
-	callback(null, user.id);
+passport.serializeUser(function(user, done) {
+	done(null, user.id);
 });
 
-passport.deserializeUser(function(id, callback) {
-	db.User.findByPk(id, function (error, user) {
-		if (error) { return callback(error); }
-		callback(null, user);
-	});
+passport.deserializeUser(function(id, done) {
+	db.User.findByPk(id)
+		.then(user => done(null, user));
 });
 
 app.use("/users", usersRouter);
