@@ -3,9 +3,9 @@ import { Table, Button } from "react-bootstrap";
 
 const Inventory = () => {
 
-	const handleButton = () => {
-		console.log("Fetching products");
-		fetch("/products/all", {
+	const handleUserButton = () => {
+		console.log("Fetching users");
+		fetch("/users/all", {
 			credentials: 'include',
 		})
 			.then(response => {
@@ -15,7 +15,21 @@ const Inventory = () => {
 			.then(data => {return data.text()})
 			.then(parsed => console.log(parsed))
 			.catch(error=>console.log(error));
-		}
+        }
+        
+    const handleProductButton = () => {
+        console.log("Fetching products");
+        fetch("/products/all", {
+            credentials: 'include',
+        })
+            .then(response => {
+                console.log(response);
+                return response;
+            })
+            .then(data => {return data.text()})
+            .then(parsed => console.log(parsed))
+            .catch(error=>console.log(error));
+        }
 	
 	return (
 		<>
@@ -43,7 +57,8 @@ const Inventory = () => {
 				</tr>
 			</tbody>
 		</Table>
-		<Button onClick={handleButton}></Button>
+		<Button onClick={handleUserButton}>User</Button>
+		<Button onClick={handleProductButton}>Product</Button>
 		</>
 
 	);

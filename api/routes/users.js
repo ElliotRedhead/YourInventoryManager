@@ -69,14 +69,18 @@ router.post("/login", passport.authenticate("local"),
 	}
 );
 
-router.get("/all", passport.authenticate("local", { session: false }), function(req, res) {
-	db.User.findAll()
-		.then( users => {
-			res.status(200).send(JSON.stringify(users));
-		})
-		.catch( err => {
-			res.status(500).send(JSON.stringify(err));
-		});
+router.get("/all", function(req, res) {
+	if (req.isAuthenticated()){
+		db.User.findAll()
+			.then( products => {
+				res.status(200).send(JSON.stringify(products));
+			})
+			.catch( err => {
+				res.status(500).send(JSON.stringify(err));
+			});
+	} else {
+		res.send("Not authenticated, access is blocked.");
+	}
 });
 
 module.exports = router;

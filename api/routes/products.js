@@ -3,13 +3,17 @@ var router = express.Router();
 var db = require("../database");
 
 router.get("/all", function(req, res) {
-	db.Product.findAll()
-		.then( products => {
-			res.status(200).send(JSON.stringify(products));
-		})
-		.catch( err => {
-			res.status(500).send(JSON.stringify(err));
-		});
+	if (req.isAuthenticated()){
+		db.Product.findAll()
+			.then( products => {
+				res.status(200).send(JSON.stringify(products));
+			})
+			.catch( err => {
+				res.status(500).send(JSON.stringify(err));
+			});
+	} else {
+		res.send("Not authenticated, access is blocked.");
+	}
 });
 
 router.get("/:id", function(req, res) {
