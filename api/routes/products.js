@@ -3,8 +3,13 @@ var router = express.Router();
 var db = require("../database");
 
 router.get("/all", function(req, res) {
+	console.log(req.user.id);
 	if (req.isAuthenticated()){
-		db.Product.findAll()
+		db.Product.findAll({
+			where: {
+				"User.id": req.user.id
+			}
+		})
 			.then( products => {
 				res.status(200).send(JSON.stringify(products));
 			})
