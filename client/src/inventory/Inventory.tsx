@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 
 const Inventory = () => {
+
+    const [userProducts, setUserProducts] = useState([{}]);
 
 	const handleUserButton = () => {
 		console.log("Fetching users");
@@ -26,8 +28,8 @@ const Inventory = () => {
                 console.log(response);
                 return response;
             })
-            .then(data => {return data.text()})
-            .then(parsed => console.log(parsed))
+            .then(data => {return data.json()})
+            .then(parsed => {setUserProducts(parsed)})
             .catch(error=>console.log(error));
         }
 	
@@ -36,26 +38,30 @@ const Inventory = () => {
 		<Table striped bordered hover>
 			  <thead>
 				<tr>
-					<th>#</th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Username</th>
+					<th>Name</th>
+					<th>Quantity</th>
+					<th>Expiry Date</th>
+					<th>Storage Location</th>
+					<th>Freezable</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>John</td>
-					<td>Doe</td>
-					<td>@john.doe</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>Jane</td>
-					<td>Doe</td>
-					<td>@jane.doe</td>
-				</tr>
-			</tbody>
+            { userProducts ?
+            userProducts.map((data, index) => (
+                
+             <>
+                <tbody>
+                    <tr>
+                        <td>{data.name}</td>
+                        <td>{data.quantity}</td>
+                        <td>{data.expiryDate}</td>
+                        <td>{data.storageLocation}</td>
+                        <td>{data.freezable}</td>
+                    </tr>
+                </tbody>
+            </>
+            ))
+            : null
+        }
 		</Table>
 		<Button onClick={handleUserButton}>User</Button>
 		<Button onClick={handleProductButton}>Product</Button>
