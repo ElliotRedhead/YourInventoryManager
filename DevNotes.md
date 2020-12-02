@@ -4,8 +4,7 @@
 
 ### Example Insert Query
 
-INSERT INTO "Products"(name,quantity,"storageLocation",freezable,"createdAt","updatedAt") VALUES ('milk',1,'fridge',false,NOW(),NOW
-());
+INSERT INTO "Products"(name,quantity,"expiryDate","storageLocation",freezable,"createdAt","updatedAt","User.id") VALUES ('milk',1,NOW(),'fridge',false,NOW(),NOW(),1);
 
 ### Building In Production
 
