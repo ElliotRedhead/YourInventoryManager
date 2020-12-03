@@ -3,7 +3,15 @@ import { Table, Button } from "react-bootstrap";
 
 const Inventory = () => {
 
-    const [userProducts, setUserProducts] = useState([{}]);
+	type userProducts = [
+		{name: string,
+		quantity: number,
+		expiryDate: string,
+		storageLocation: string,
+		freezable: boolean | null}
+	]
+
+    const [userProducts, setUserProducts] = useState<userProducts>();
 
 	const handleUserButton = () => {
 		console.log("Fetching users");
@@ -51,11 +59,11 @@ const Inventory = () => {
              <>
                 <tbody>
                     <tr>
-                        <td>{data.name}</td>
-                        <td>{data.quantity}</td>
-                        <td>{data.expiryDate}</td>
-                        <td>{data.storageLocation}</td>
-                        <td>{data.freezable}</td>
+                        <td>{data["name"]}</td>
+                        <td>{data["quantity"]}</td>
+                        <td>{data["expiryDate"]}</td>
+                        <td>{data["storageLocation"]}</td>
+                        <td>{data["freezable"]}</td>
                     </tr>
                 </tbody>
             </>
