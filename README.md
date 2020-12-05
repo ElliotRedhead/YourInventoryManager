@@ -5,12 +5,13 @@ Get visibility on your product quantities, set stock alerts and track consumptio
 
 ## The Techy Bit
 
-| Technology | Purpose                               |
-| ---------- | ------------------------------------- |
-| React.js   | Frontend Rendering (Library)          |
-| Express.js | Frontend-Backend Interfacing API      |
-| Node.js    | Backend Handling                      |
-| PostgreSQL | Relational Database Management System |
-| Docker     | Project Containerization              |
-| ESLint     | JavaScript Linter                     |
-| Yarn       | Package Manager                       |
+| Technology  | Purpose                               |
+| ----------- | ------------------------------------- |
+| React.js    | Frontend Rendering (Library)          |
+| Express.js  | Frontend-Backend Interfacing API      |
+| Node.js     | Backend Handling                      |
+| Passport.js | Authentication Handling               |
+| PostgreSQL  | Relational Database Management System |
+| Docker      | Project Containerization              |
+| ESLint      | JavaScript Linter                     |
+| Yarn        | Package Manager                       |
