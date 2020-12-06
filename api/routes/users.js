@@ -12,18 +12,22 @@ var router = express.Router();
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		db.User.findOne({where: { username: username }}).then(function(user) {
-			if(user){
-				bcrypt.compare(password,user.password)
-					.then(result => {
-						if(result){
-							return done(null,user);
-						}
-					});
-			} else if(!user){
-				return done(null,false);
-			}
-		});
+		db.User.findOne({where: { username: username }})
+			.then(function(user) {
+				if(user){
+					bcrypt.compare(password,user.password)
+						.then(result => {
+							if(result){
+								return done(null,user);
+							}
+						});
+				} else if(!user){
+					return done(null,false);
+				}
+			})
+			.catch(function(error) {
+				console.log(error.message);
+			});
 	}
 ));
 
