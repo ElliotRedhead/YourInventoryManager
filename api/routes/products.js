@@ -3,7 +3,6 @@ var router = express.Router();
 var db = require("../database");
 
 router.get("/all", function(req, res) {
-	console.log(req.user.id);
 	if (req.isAuthenticated()){
 		db.Product.findAll({
 			where: {

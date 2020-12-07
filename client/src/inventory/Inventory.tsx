@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
+import { useCookies } from "react-cookie";
 
 const Inventory = () => {
+
+	console.log("The cookies are: \n");
+	const [sessionCookie, setCookie] = useCookies();
+	if (sessionCookie['sessionjwt']){
+		console.log("yay cookies!");
+	}
 
 	type userProducts = [
 		{name: string,
