@@ -2,6 +2,9 @@ var express = require("express");
 var router = express.Router();
 var db = require("../database");
 
+/**
+ * Get all products owned by the user.
+ */
 router.get("/all", function(req, res) {
 	if (req.isAuthenticated()){
 		db.Product.findAll({
@@ -20,6 +23,9 @@ router.get("/all", function(req, res) {
 	}
 });
 
+/**
+ * Get a product that has a specific id.
+ */
 router.get("/:id", function(req, res) {
 	if (req.isAuthenticated()) {
 		db.Product.findByPk(req.params.id)
@@ -32,6 +38,9 @@ router.get("/:id", function(req, res) {
 	}
 });
 
+/**
+ * Create a product with the parameters passed.
+ */
 router.put("/", function(req, res) {
 	if (req.isAuthenticated()) {
 		db.Product.create({
@@ -51,6 +60,9 @@ router.put("/", function(req, res) {
 	}
 });
 
+/**
+ * Delete a product, based on product ID.
+ */
 router.delete("/:id", function(req, res) {
 	if (req.isAuthenticated()){
 		db.Product.destroy({
