@@ -57,7 +57,7 @@ app.use("/products", productsRouter);
 
 if(process.env.NODE_ENV === "production") {
 	app.use(express.static(__dirname.replace("/api","/client/build")));
-	app.get("*", (req, res) => {    res.sendFile(__dirname.replace("api","client/build/index.html"));  });
+	app.get("*", (request, response) => { response.sendFile(__dirname.replace("api","client/build/index.html")); });
 }
 
 

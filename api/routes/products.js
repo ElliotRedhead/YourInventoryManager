@@ -5,35 +5,35 @@ var db = require("../database");
 /**
  * Get all products owned by the user.
  */
-router.get("/all", function(req, res) {
-	if (req.isAuthenticated()){
+router.get("/all", function(request, response) {
+	if (request.isAuthenticated()){
 		db.Product.findAll({
 			where: {
-				"User.id": req.user.id
+				"User.id": request.user.id
 			}
 		})
 			.then( products => {
-				res.status(200).send(JSON.stringify(products));
+				response.status(200).send(JSON.stringify(products));
 			})
-			.catch( err => {
-				res.status(500).send(JSON.stringify(err));
+			.catch( error => {
+				response.status(500).send(JSON.stringify(error));
 			});
 	} else {
-		res.send("Not authenticated, access is blocked.");
+		response.send("Not authenticated, access is blocked.");
 	}
 });
 
 /**
  * Get a product that has a specific id.
  */
-router.get("/:id", function(req, res) {
-	if (req.isAuthenticated()) {
-		db.Product.findByPk(req.params.id)
+router.get("/:id", function(request, response) {
+	if (request.isAuthenticated()) {
+		db.Product.findByPk(request.params.id)
 			.then( product => {
-				res.status(200).send(JSON.stringify(product));
+				response.status(200).send(JSON.stringify(product));
 			})
-			.catch( err => {
-				res.status(500).send(JSON.stringify(err));
+			.catch( error => {
+				response.status(500).send(JSON.stringify(error));
 			});
 	}
 });
@@ -41,21 +41,21 @@ router.get("/:id", function(req, res) {
 /**
  * Create a product with the parameters passed.
  */
-router.put("/", function(req, res) {
-	if (req.isAuthenticated()) {
+router.put("/", function(request, response) {
+	if (request.isAuthenticated()) {
 		db.Product.create({
-			name: req.body.name,
-			quantity: req.body.quantity,
-			expiryDate: req.body.expiryDate,
-			storageLocation: req.body.storageLocation,
-			freezable: req.body.freezable,
-			id: req.body.id
+			name: request.body.name,
+			quantity: request.body.quantity,
+			expiryDate: request.body.expiryDate,
+			storageLocation: request.body.storageLocation,
+			freezable: request.body.freezable,
+			id: request.body.id
 		})
 			.then( product => {
-				res.status(200).send(JSON.stringify(product));
+				response.status(200).send(JSON.stringify(product));
 			})
-			.catch( err => {
-				res.status(500).send(JSON.stringify(err));
+			.catch( error => {
+				response.status(500).send(JSON.stringify(error));
 			});
 	}
 });
@@ -63,18 +63,18 @@ router.put("/", function(req, res) {
 /**
  * Delete a product, based on product ID.
  */
-router.delete("/:id", function(req, res) {
-	if (req.isAuthenticated()){
+router.delete("/:id", function(request, response) {
+	if (request.isAuthenticated()){
 		db.Product.destroy({
 			where: {
-				id: req.params.id
+				id: request.params.id
 			}
 		})
 			.then( () => {
-				res.status(200).send();
+				response.status(200).send();
 			})
-			.catch( err => {
-				res.status(500).send(JSON.stringify(err));
+			.catch( error => {
+				response.status(500).send(JSON.stringify(error));
 			});
 	}
 });

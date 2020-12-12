@@ -69,21 +69,22 @@ router.post("/login", passport.authenticate("local"),
 		const token = jwt.sign(request.body.username, accessTokenSecret);
 
 		response.cookie("sessionjwt", token);
+		response.redirect("/inventory");
 		next();
 	}
 );
 
-router.get("/all", function(req, res) {
-	if (req.isAuthenticated()){
+router.get("/all", function(request, response) {
+	if (request.isAuthenticated()){
 		db.User.findAll()
-			.then( products => {
-				res.status(200).send(JSON.stringify(products));
+			.then( users => {
+				response.status(200).send(JSON.stringify(users));
 			})
-			.catch( err => {
-				res.status(500).send(JSON.stringify(err));
+			.catch( error => {
+				response.status(500).send(JSON.stringify(error));
 			});
 	} else {
-		res.send("Not authenticated, access is blocked.");
+		response.send("Not authenticated, access is blocked.");
 	}
 });
 
