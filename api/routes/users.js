@@ -71,15 +71,30 @@ router.post("/register", function (request, response) {
 		});
 });
 
-router.post("/login", passport.authenticate("local"),
-	function(request, response, next) {
-		const token = jwt.sign(request.body.username, accessTokenSecret);
+router.post("/login", function(request, response, next){
+	console.log("POST request made");
+	passport.authenticate("local", function(error, user, info) {
+		console.log(info);
+		if (error) {
+			response.send("Error");
+			return next(error);
+		} else if (!user) {
+			response.send(info.message);
+			return next();
+		} else {
+			console.log("User validated, sign in.");
+			const token = jwt.sign(request.body.username, accessTokenSecret);
+				
+			response.cookie("sessionjwt", token);
+			response.send("Authorized");
 
-		response.cookie("sessionjwt", token);
-		response.redirect("/inventory");
-		next();
-	}
-);
+			request.user = user;
+			request.login(user, next);
+			// Need to add passport session cookies on login.
+		}
+
+	}) (request, response, next);
+});
 
 router.get("/all", function(request, response) {
 	if (request.isAuthenticated()){
