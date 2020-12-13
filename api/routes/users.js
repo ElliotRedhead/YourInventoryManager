@@ -18,15 +18,22 @@ passport.use(new LocalStrategy(
 					bcrypt.compare(password,user.password)
 						.then(result => {
 							if(result){
-								return done(null,user);
+								// Valid username and password.
+								return done(null, user);
+							} else {
+								// Invalid password.
+								return done(null, false, { message: "Incorrect password." });
 							}
 						});
 				} else if(!user){
-					return done(null,false);
+					// User not found.
+					return done(null, false, { message: "User not found." });
 				}
 			})
 			.catch(function(error) {
+				// Database connection error.
 				console.log(error.message);
+				return done(error, false, { message: "Database connection error." });
 			});
 	}
 ));
