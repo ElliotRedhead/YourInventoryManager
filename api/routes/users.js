@@ -31,8 +31,7 @@ passport.use(new LocalStrategy(
 				}
 			})
 			.catch(function(error) {
-				// Database connection error.
-				console.log(error.message);
+				// e.g. Database connection error.
 				return done(error, false, { message: "Database connection error." });
 			});
 	}
@@ -73,27 +72,23 @@ router.post("/register", function (request, response) {
 
 router.post("/login", function(request, response, next){
 	console.log("POST request made");
-	passport.authenticate("local", function(error, user, info) {
-		console.log(info);
+	passport.authenticate("local", {failureFlash:true}, function(error, user, info) {
 		if (error) {
-			response.send("Error");
-			return next(error);
+			response.send("Error connecting to database.");
+			console.log(error);
 		} else if (!user) {
 			response.send(info.message);
-			return next();
 		} else {
-			console.log("User validated, sign in.");
-			const token = jwt.sign(request.body.username, accessTokenSecret);
-				
-			response.cookie("sessionjwt", token);
-			response.send("Authorized");
-
-			request.user = user;
-			request.login(user, next);
-			// Need to add passport session cookies on login.
+			request.logIn(user, function(error) {
+				if (error) { return next(error); }
+				console.log("User validated, sign in.");
+				const token = jwt.sign(request.body.username, accessTokenSecret);
+				response.cookie("sessionjwt", token);
+				response.send("User Authorized");
+				request.user = user;
+			});
 		}
-
-	}) (request, response, next);
+	}) (request,response,next);
 });
 
 router.get("/all", function(request, response) {
