@@ -9,24 +9,20 @@ const Authtest = () => {
 	let authMessage = "Authenticated?";
 	if (auth) {
 		authMessage = "You're authenticated!";
-
 	}
-	if (!auth){
+	if (!auth) {
 		authMessage = "You're not authenticated!";
 	}
 
-	return (
-		<p>{authMessage}</p>
-	);
+	return <p>{authMessage}</p>;
 };
 
 const App = () => {
-  
 	return (
 		<>
 			<Switch>
 				<Route exact path={"/Authentication"}>
-					<Authentication/>
+					<Authentication />
 				</Route>
 				<Route exact path={"/Inventory"}>
 					<Inventory />
