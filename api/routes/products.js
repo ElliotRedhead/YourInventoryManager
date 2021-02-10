@@ -41,7 +41,7 @@ router.get("/:id", function(request, response) {
 /**
  * Create a product with the parameters passed.
  */
-router.put("/", function(request, response) {
+router.post("/", function(request, response) {
 	if (request.isAuthenticated()) {
 		db.Product.create({
 			name: request.body.name,
