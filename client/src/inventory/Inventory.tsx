@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 
-const Inventory = () => {
+const Inventory = (): JSX.Element => {
 	console.log("The cookies are: \n");
-	const [sessionCookie, setCookie] = useCookies();
+	const [sessionCookie] = useCookies();
 	if (sessionCookie["sessionjwt"]) {
-		console.log("yay cookies!");
+		console.log("yay sessionjwt cookie!");
 	}
 
 	type userProducts = [
@@ -19,7 +19,7 @@ const Inventory = () => {
 		}
 	];
 
-	const [userProducts, setUserProducts] = useState<userProducts>();
+	const [userProducts, setUserProducts] = useState<userProducts | string>();
 
 	useEffect(() => {
 		console.log("Fetching products");
@@ -30,10 +30,13 @@ const Inventory = () => {
 				console.log(response);
 				return response;
 			})
-			.then((data) => {
-				return data.json();
-			})
+			.then((data) =>
+			//
+				data.text())
+		// return data.json();
+			// })
 			.then((parsed) => {
+				console.log(parsed);
 				setUserProducts(parsed);
 			})
 			.catch((error) => console.log(error));
@@ -67,7 +70,7 @@ const Inventory = () => {
 						<th>Freezable</th>
 					</tr>
 				</thead>
-				{userProducts ?
+				{/* {userProducts &&
 					userProducts.map((data) => (
 						<>
 							<tbody>
@@ -80,10 +83,12 @@ const Inventory = () => {
 								</tr>
 							</tbody>
 						</>
-					  )) :
-					null}
+					  ))
+				} */}
 			</Table>
-			<Button onClick={handleUserButton}>User</Button>
+			<Button onClick={handleUserButton}>
+				User
+			</Button>
 		</>
 	);
 };
