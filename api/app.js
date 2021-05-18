@@ -8,7 +8,7 @@ const passport = require("passport");
 const session = require("cookie-session");
 // const helmet = require("helmet");
 // const hpp = require("hpp");
-// const csurf = require("csurf");
+const csurf = require("csurf");
 // const limiter = require("express-rate-limit");
 
 const db = require("./database");
@@ -30,7 +30,7 @@ app.use(cookieParser("MY SECRET!1"));
 app.use(session({
 	resave: false,
 	name: "session",
-	secret: "rfk3r9hfw2",
+	secret: process.env.SESSION_SECRET,
 	expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
 	cookie: {
 		httpOnly: false,
@@ -38,7 +38,7 @@ app.use(session({
 	}
 }));	
 
-// app.use(csurf());
+app.use(csurf());
 // app.use(limiter);
 app.use(passport.initialize());
 app.use(passport.session());
