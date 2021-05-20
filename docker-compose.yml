@@ -1,13 +1,14 @@
 version: "3.7"
+            
 services:
   postgres:
     container_name: postgres
     image: postgres
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
     ports:
-      - "5432:5432"
+      - ${DB_PORT:-5432:5432}
     volumes:
       - postgres-db:/var/lib/postgresql/data
 
@@ -17,22 +18,29 @@ services:
       context: ./api
     environment:
       DB_SCHEMA: postgres
-      DB_USER: ${DB_USER}
+      DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: postgres
     depends_on:
       - postgres
     ports:
       - "5000:5000"
+    volumes:
+      - ./api:/api
+      - /api/node_modules
 
   react-ui:
     container_name: react-ui
+    stdin_open: true
     build:
       context: ./client
-    depends_on:
-      - express-api
+    environment:
+        CHOKIDAR_USEPOLLING: "true"
     ports:
       - "3000:3000"
+    volumes:
+      - ./client:/client
+      - /client/node_modules
 
 volumes:
   postgres-db:
