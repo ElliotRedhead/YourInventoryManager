@@ -2,8 +2,8 @@
 	"name": "express-api",
 	"version": "0.0.0",
 	"scripts": {
-		"server": "pm2 start processes.json --no-daemon --watch",
-		"start": "node ./bin/www",
+		"server": "pm2 start processes.json --no-daemon --watch --silent",
+		"start": "nodemon ./bin/www",
 		"test": "jest",
 		"migrate": "node ./bin/migrate.js"
 	},
