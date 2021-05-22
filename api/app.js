@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json({extended:true}));
 app.use(bodyParser.text({extended:true}));
-app.use(cookieParser("MY SECRET!1"));
+app.use(cookieParser(process.env.COOKIE_PARSER_SECRET));
 
 app.use(session({
 	resave: false,
