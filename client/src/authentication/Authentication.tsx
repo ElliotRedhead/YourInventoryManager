@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import reactCookie from "react-cookie";
 
@@ -7,7 +7,7 @@ const Authentication = () => {
 	const [authMode, setAuthMode] = useState("Register");
 	const invertAuthMode = () => {
 		authMode === "Register" ? setAuthMode("Login") : setAuthMode("Register");
-	}
+	};
 
 	const handleSubmit = (event : any) => {
 		const form = event.currentTarget;
@@ -27,7 +27,9 @@ const Authentication = () => {
 					console.log(response);
 					return response;
 				})
-				.then(data => {return data.text()})
+				.then(data => {
+					return data.text();
+				})
 				.then(parsed => console.log(parsed))
 				.catch(error=>console.log(error));
 
@@ -45,7 +47,7 @@ const Authentication = () => {
 				<Form.Label>Email address</Form.Label>
 				<Form.Control type="email" placeholder="Email address" />
 				<Form.Text className="text-muted">
-					We'll never share your email with anyone else.
+					{"We'll never share your email with anyone else."}
 				</Form.Text>
 			</Form.Group>
 			{/* Password field */}

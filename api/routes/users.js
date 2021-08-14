@@ -1,4 +1,5 @@
 var express = require("express");
+var cors = require("cors");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require("bcrypt");
@@ -91,18 +92,18 @@ router.post("/login", function(request, response, next){
 	}) (request,response,next);
 });
 
-router.get("/all", function(request, response) {
-	if (request.isAuthenticated()){
-		db.User.findAll()
-			.then( users => {
-				response.status(200).send(JSON.stringify(users));
-			})
-			.catch( error => {
-				response.status(500).send(JSON.stringify(error));
-			});
-	} else {
-		response.send("Not authenticated, access is blocked.");
-	}
+router.get("/all", cors(), function(request, response) {
+	// if (request.isAuthenticated()){
+	db.User.findAll()
+		.then( users => {
+			response.status(200).send(JSON.stringify(users));
+		})
+		.catch( error => {
+			response.status(500).send(JSON.stringify(error));
+		});
+	// } else {
+	// response.send("Not authenticated, access is blocked.");
+	// }
 });
 
 module.exports = router;
