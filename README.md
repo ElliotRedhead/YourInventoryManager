@@ -21,6 +21,7 @@ Get visibility on your product quantities, set stock alerts and track consumptio
 #### Running the compose services
 
 The project has been divided into separate docker services, the frontend (react-ui), express api (express-api) and postgreSQL database (postgres).  
+Populate all .env files, based on the keys in the .env.default files.  
 All of these can be started with the command: `docker compose up`  
 
 #### Accessing the postgreSQL database  
