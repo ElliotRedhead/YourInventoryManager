@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
-import reactCookie from "react-cookie";
+import { fetchCsrf } from "../utilities/fetchcsrf";
+// import * as reactCookie from "react-cookie";
 
 const Authentication = () => {
 
 	const [authMode, setAuthMode] = useState("Register");
+	const [csrfToken, setCsrfToken] = useState("");
+
+	useEffect(() => {
+		const fetchedCsrf = fetchCsrf();
+		fetchedCsrf.then((fetchedCsrf) => {
+			// @ts-ignore
+			setCsrfToken(fetchedCsrf.csrfToken);
+		});
+	}, []);
+
 	const invertAuthMode = () => {
 		authMode === "Register" ? setAuthMode("Login") : setAuthMode("Register");
 	};
@@ -12,10 +23,11 @@ const Authentication = () => {
 	const handleSubmit = (event : any) => {
 		const form = event.currentTarget;
 		event.preventDefault();
+		console.log(csrfToken);
 		if (form.elements !== null){
 			fetch(`/users/${authMode.toLowerCase()}`, {
 				method:"post",
-				headers: { "Content-Type": "application/json" },
+				headers: { "Content-Type": "application/json", "CSRF-Token": csrfToken },
 				credentials: "include",
 				body: JSON.stringify({
 					"username":form.elements.formUsername.value,
@@ -23,14 +35,7 @@ const Authentication = () => {
 					"password": form.elements.formPassword.value
 				})
 			})
-				.then(response => {
-					console.log(response);
-					return response;
-				})
-				.then(data => {
-					return data.text();
-				})
-				.then(parsed => console.log(parsed))
+				.then(response => console.log(response))
 				.catch(error=>console.log(error));
 
 		}
