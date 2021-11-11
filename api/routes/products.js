@@ -5,17 +5,17 @@ var db = require("../database");
 /**
  * Get all products owned by the user.
  */
-router.get("/all", function(request, response) {
+router.get("/", function(request, response) {
 	if (request.isAuthenticated()){
-		db.Product.findAll({
+		db.product.findAll({
 			where: {
-				"User.id": request.user.id
+				"user.id": request.user.id
 			}
 		})
-			.then( products => {
+			.then(products => {
 				response.status(200).send(JSON.stringify(products));
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
 	} else {
@@ -28,11 +28,11 @@ router.get("/all", function(request, response) {
  */
 router.get("/:id", function(request, response) {
 	if (request.isAuthenticated()) {
-		db.Product.findByPk(request.params.id)
-			.then( product => {
+		db.product.findByPk(request.params.id)
+			.then(product => {
 				response.status(200).send(JSON.stringify(product));
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
 	}
@@ -43,7 +43,7 @@ router.get("/:id", function(request, response) {
  */
 router.post("/", function(request, response) {
 	if (request.isAuthenticated()) {
-		db.Product.create({
+		db.product.create({
 			name: request.body.name,
 			quantity: request.body.quantity,
 			expiryDate: request.body.expiryDate,
@@ -51,10 +51,10 @@ router.post("/", function(request, response) {
 			freezable: request.body.freezable,
 			id: request.body.id
 		})
-			.then( product => {
+			.then(product => {
 				response.status(200).send(JSON.stringify(product));
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
 	}
@@ -65,15 +65,15 @@ router.post("/", function(request, response) {
  */
 router.delete("/:id", function(request, response) {
 	if (request.isAuthenticated()){
-		db.Product.destroy({
+		db.product.destroy({
 			where: {
 				id: request.params.id
 			}
 		})
-			.then( () => {
+			.then(() => {
 				response.status(200).send();
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
 	}

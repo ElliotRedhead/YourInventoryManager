@@ -53,7 +53,7 @@ passport.serializeUser(function(user, done) {
 });
 	
 passport.deserializeUser(function(id, done) {
-	db.User.findByPk(id)
+	db.user.findByPk(id)
 		.then(user => done(null, user));
 });
 	

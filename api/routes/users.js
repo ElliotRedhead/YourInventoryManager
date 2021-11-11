@@ -13,7 +13,7 @@ var router = express.Router();
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		db.User.findOne({where: { username: username }})
+		db.user.findOne({where: { username: username }})
 			.then(function(user) {
 				if(user){
 					bcrypt.compare(password,user.password)
@@ -40,7 +40,7 @@ passport.use(new LocalStrategy(
 
 
 router.post("/register", function (request, response) {
-	db.User.findOne({
+	db.user.findOne({
 		where:
 			db.sequelize.or(
 				{username: request.body.username},
@@ -49,7 +49,7 @@ router.post("/register", function (request, response) {
 	}).then(function(user){
 		if(!user) {
 			bcrypt.hash(request.body.password, saltRounds, function (error, hash) {
-				db.User.create({
+				db.user.create({
 					username: request.body.username,
 					email: request.body.email,
 					password: hash
@@ -92,13 +92,13 @@ router.post("/login", function(request, response, next){
 	}) (request,response,next);
 });
 
-router.get("/all", cors(), function(request, response) {
+router.get("/", cors(), function(request, response) {
 	// if (request.isAuthenticated()){
-	db.User.findAll()
-		.then( users => {
+	db.user.findAll()
+		.then(users => {
 			response.status(200).send(JSON.stringify(users));
 		})
-		.catch( error => {
+		.catch(error => {
 			response.status(500).send(JSON.stringify(error));
 		});
 	// } else {
