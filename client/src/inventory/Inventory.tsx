@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button } from "react-bootstrap";
-import { useCookies } from "react-cookie";
+import { Table } from "react-bootstrap";
+// import { useCookies } from "react-cookie";
 
 const Inventory = (): JSX.Element => {
-	console.log("The cookies are: \n");
-	const [sessionCookie] = useCookies();
-	if (sessionCookie["sessionjwt"]) {
-		console.log("yay sessionjwt cookie!");
-	}
+	// const [sessionCookie] = useCookies();
+	// console.log(sessionCookie);
 
 	type userProducts = [
 		{
@@ -19,32 +16,10 @@ const Inventory = (): JSX.Element => {
 		}
 	];
 
-	const [userProducts, setUserProducts] = useState<userProducts | string>();
+	const [userProducts, setUserProducts] = useState<userProducts>();
 
 	useEffect(() => {
-		console.log("Fetching products");
-		fetch("/products/all", {
-			credentials: "include"
-		})
-			.then((response) => {
-				console.log(response);
-				return response;
-			})
-			.then((data) =>
-			//
-				data.text())
-		// return data.json();
-			// })
-			.then((parsed) => {
-				console.log(parsed);
-				setUserProducts(parsed);
-			})
-			.catch((error) => console.log(error));
-	}, []);
-
-	const handleUserButton = () => {
-		console.log("Fetching users");
-		fetch("/users/all", {
+		fetch("/products", {
 			credentials: "include"
 		})
 			.then((response) => {
@@ -52,44 +27,42 @@ const Inventory = (): JSX.Element => {
 				return response;
 			})
 			.then((data) => {
-				return data.text();
+				return data.json();
 			})
-			.then((parsed) => console.log(parsed))
+			.then((parsed) => {
+				console.log(parsed);
+				setUserProducts(parsed);
+			})
 			.catch((error) => console.log(error));
-	};
+	}, []);
 
 	return (
-		<>
-			<Table striped bordered hover>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Quantity</th>
-						<th>Expiry Date</th>
-						<th>Storage Location</th>
-						<th>Freezable</th>
-					</tr>
-				</thead>
-				{/* {userProducts &&
-					userProducts.map((data) => (
+		<Table striped bordered hover>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Quantity</th>
+					<th>Expiry Date</th>
+					<th>Storage Location</th>
+					<th>Freezable</th>
+				</tr>
+			</thead>
+			{userProducts &&
+					userProducts.map((item) => (
 						<>
 							<tbody>
 								<tr>
-									<td>{data["name"]}</td>
-									<td>{data["quantity"]}</td>
-									<td>{data["expiryDate"]}</td>
-									<td>{data["storageLocation"]}</td>
-									<td>{data["freezable"]}</td>
+									<td>{item["name"]}</td>
+									<td>{item["quantity"]}</td>
+									<td>{item["expiryDate"]}</td>
+									<td>{item["storageLocation"]}</td>
+									<td>{item["freezable"]}</td>
 								</tr>
 							</tbody>
 						</>
 					  ))
-				} */}
-			</Table>
-			<Button onClick={handleUserButton}>
-				User
-			</Button>
-		</>
+			}
+		</Table>
 	);
 };
 
