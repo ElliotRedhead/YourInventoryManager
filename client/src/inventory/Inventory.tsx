@@ -23,15 +23,10 @@ const Inventory = (): JSX.Element => {
 			credentials: "include"
 		})
 			.then((response) => {
-				console.log(response);
-				return response;
+				return response.json();
 			})
-			.then((data) => {
-				return data.json();
-			})
-			.then((parsed) => {
-				console.log(parsed);
-				setUserProducts(parsed);
+			.then((parsedProducts) => {
+				setUserProducts(parsedProducts);
 			})
 			.catch((error) => console.log(error));
 	}, []);

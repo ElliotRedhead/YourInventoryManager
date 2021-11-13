@@ -49,11 +49,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 	
 passport.serializeUser(function(user, done) {
-	done(null, user.id);
+	done(null, {"id":user.id, "uuid":user.uuid});
 });
 	
-passport.deserializeUser(function(id, done) {
-	db.user.findByPk(id)
+passport.deserializeUser(function(userIds, done) {
+	db.user.findByPk(userIds.id)
 		.then(user => done(null, user));
 });
 	

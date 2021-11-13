@@ -25,7 +25,7 @@ const sequelize = process.env.DATABASE_URL ? new Sequelize(
 	}
 );
 
-                            
+
 const user = sequelize.define("user", {
 	username: {
 		type: Sequelize.STRING,
@@ -38,6 +38,10 @@ const user = sequelize.define("user", {
 	email: {
 		type: Sequelize.STRING,
 		allowNull: true
+	},
+	uuid: {
+		type: Sequelize.UUID,
+		allowNull: false
 	}
 });
 
