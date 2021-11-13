@@ -100,7 +100,7 @@ router.get("/", cors(), function(request, response) {
 				response.status(500).send(JSON.stringify(error));
 			});
 	} else {
-		response.send("Not authenticated, access is blocked.");
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 

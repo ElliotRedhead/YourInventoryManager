@@ -20,7 +20,7 @@ router.get("/", function(request, response) {
 				response.status(500).send(JSON.stringify(error));
 			});
 	} else {
-		response.send("Not authenticated, access is blocked.");
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 
@@ -28,7 +28,7 @@ router.get("/", function(request, response) {
  * Get a product that has a specific id.
  */
 router.get("/:id", function(request, response) {
-	if (request.isAuthenticated()) {
+	if (request.isAuthenticated()){
 		db.product.findByPk(request.params.id)
 			.then(product => {
 				response.status(200).send(JSON.stringify(product));
@@ -36,6 +36,8 @@ router.get("/:id", function(request, response) {
 			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
+	} else {
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 
@@ -58,6 +60,8 @@ router.post("/", function(request, response) {
 			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
+	} else {
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 
@@ -77,6 +81,8 @@ router.delete("/:id", function(request, response) {
 			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
+	} else {
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 
