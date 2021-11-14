@@ -1,23 +1,24 @@
 var express = require("express");
+var cors = require("cors");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require("bcrypt");
 var db = require("../database");
-const jwt = require("jsonwebtoken");
-const accessTokenSecret = "youraccesstokensecret";
 // Use more salt rounds in production for greater security.
 const saltRounds = 10;
+const { v4: uuidv4 } = require("uuid");
 
 var router = express.Router();
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		db.User.findOne({where: { username: username }})
+		db.user.findOne({where: { username: username }})
 			.then(function(user) {
 				if(user){
 					bcrypt.compare(password,user.password)
 						.then(result => {
 							if(result){
+								console.log(user);
 								// Valid username and password.
 								return done(null, user);
 							} else {
@@ -39,7 +40,7 @@ passport.use(new LocalStrategy(
 
 
 router.post("/register", function (request, response) {
-	db.User.findOne({
+	db.user.findOne({
 		where:
 			db.sequelize.or(
 				{username: request.body.username},
@@ -48,10 +49,11 @@ router.post("/register", function (request, response) {
 	}).then(function(user){
 		if(!user) {
 			bcrypt.hash(request.body.password, saltRounds, function (error, hash) {
-				db.User.create({
+				db.user.create({
 					username: request.body.username,
 					email: request.body.email,
-					password: hash
+					password: hash,
+					uuid: uuidv4()
 				});
 			});
 
@@ -75,15 +77,11 @@ router.post("/login", function(request, response, next){
 	passport.authenticate("local", {failureFlash:true}, function(error, user, info) {
 		if (error) {
 			response.send("Error connecting to database.");
-			console.log(error);
 		} else if (!user) {
 			response.send(info.message);
 		} else {
 			request.logIn(user, function(error) {
 				if (error) { return next(error); }
-				console.log("User validated, sign in.");
-				const token = jwt.sign(request.body.username, accessTokenSecret);
-				response.cookie("sessionjwt", token);
 				response.send("User Authorized");
 				request.user = user;
 			});
@@ -91,17 +89,18 @@ router.post("/login", function(request, response, next){
 	}) (request,response,next);
 });
 
-router.get("/all", function(request, response) {
+router.get("/", cors(), function(request, response) {
 	if (request.isAuthenticated()){
-		db.User.findAll()
-			.then( users => {
+		db.user.findAll()
+			.then(users => {
+				console.log(users);
 				response.status(200).send(JSON.stringify(users));
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
 	} else {
-		response.send("Not authenticated, access is blocked.");
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button } from "react-bootstrap";
-import { useCookies } from "react-cookie";
+import { Table } from "react-bootstrap";
+// import { useCookies } from "react-cookie";
 
-const Inventory = () => {
-	console.log("The cookies are: \n");
-	const [sessionCookie, setCookie] = useCookies();
-	if (sessionCookie["sessionjwt"]) {
-		console.log("yay cookies!");
-	}
+const Inventory = (): JSX.Element => {
+	// const [sessionCookie] = useCookies();
+	// console.log(sessionCookie);
 
 	type userProducts = [
 		{
@@ -22,69 +19,45 @@ const Inventory = () => {
 	const [userProducts, setUserProducts] = useState<userProducts>();
 
 	useEffect(() => {
-		console.log("Fetching products");
-		fetch("/products/all", {
+		fetch("/products", {
 			credentials: "include"
 		})
 			.then((response) => {
-				console.log(response);
-				return response;
+				return response.json();
 			})
-			.then((data) => {
-				return data.json();
-			})
-			.then((parsed) => {
-				setUserProducts(parsed);
+			.then((parsedProducts) => {
+				setUserProducts(parsedProducts);
 			})
 			.catch((error) => console.log(error));
 	}, []);
 
-	const handleUserButton = () => {
-		console.log("Fetching users");
-		fetch("/users/all", {
-			credentials: "include"
-		})
-			.then((response) => {
-				console.log(response);
-				return response;
-			})
-			.then((data) => {
-				return data.text();
-			})
-			.then((parsed) => console.log(parsed))
-			.catch((error) => console.log(error));
-	};
-
 	return (
-		<>
-			<Table striped bordered hover>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Quantity</th>
-						<th>Expiry Date</th>
-						<th>Storage Location</th>
-						<th>Freezable</th>
-					</tr>
-				</thead>
-				{userProducts ?
-					userProducts.map((data) => (
+		<Table striped bordered hover>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Quantity</th>
+					<th>Expiry Date</th>
+					<th>Storage Location</th>
+					<th>Freezable</th>
+				</tr>
+			</thead>
+			{userProducts &&
+					userProducts.map((item) => (
 						<>
 							<tbody>
 								<tr>
-									<td>{data["name"]}</td>
-									<td>{data["quantity"]}</td>
-									<td>{data["expiryDate"]}</td>
-									<td>{data["storageLocation"]}</td>
-									<td>{data["freezable"]}</td>
+									<td>{item["name"]}</td>
+									<td>{item["quantity"]}</td>
+									<td>{item["expiryDate"]}</td>
+									<td>{item["storageLocation"]}</td>
+									<td>{item["freezable"]}</td>
 								</tr>
 							</tbody>
 						</>
-					  )) :
-					null}
-			</Table>
-			<Button onClick={handleUserButton}>User</Button>
-		</>
+					  ))
+			}
+		</Table>
 	);
 };
 

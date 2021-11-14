@@ -1,8 +1,8 @@
 
 FROM node:10.16.0-alpine
-WORKDIR /usr/src/app
-COPY package*.json ./
+WORKDIR /client
+COPY package*.json /client/
 RUN npm install
-COPY . .
+COPY . /client/
 EXPOSE 3000
 CMD [ "yarn", "start" ]

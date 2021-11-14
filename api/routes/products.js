@@ -1,25 +1,26 @@
 var express = require("express");
 var router = express.Router();
 var db = require("../database");
+var matchUserCredentials = require("../utilities/matchUserCredentials");
 
 /**
  * Get all products owned by the user.
  */
-router.get("/all", function(request, response) {
-	if (request.isAuthenticated()){
-		db.Product.findAll({
+router.get("/", function(request, response) {
+	if (request.isAuthenticated() && (async () => await matchUserCredentials(request.user.id, request.user.uuid))){
+		db.product.findAll({
 			where: {
-				"User.id": request.user.id
+				"user.id": request.user.id
 			}
 		})
-			.then( products => {
+			.then(products => {
 				response.status(200).send(JSON.stringify(products));
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
 	} else {
-		response.send("Not authenticated, access is blocked.");
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 
@@ -27,14 +28,16 @@ router.get("/all", function(request, response) {
  * Get a product that has a specific id.
  */
 router.get("/:id", function(request, response) {
-	if (request.isAuthenticated()) {
-		db.Product.findByPk(request.params.id)
-			.then( product => {
+	if (request.isAuthenticated()){
+		db.product.findByPk(request.params.id)
+			.then(product => {
 				response.status(200).send(JSON.stringify(product));
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
+	} else {
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 
@@ -43,7 +46,7 @@ router.get("/:id", function(request, response) {
  */
 router.post("/", function(request, response) {
 	if (request.isAuthenticated()) {
-		db.Product.create({
+		db.product.create({
 			name: request.body.name,
 			quantity: request.body.quantity,
 			expiryDate: request.body.expiryDate,
@@ -51,12 +54,14 @@ router.post("/", function(request, response) {
 			freezable: request.body.freezable,
 			id: request.body.id
 		})
-			.then( product => {
+			.then(product => {
 				response.status(200).send(JSON.stringify(product));
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
+	} else {
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 
@@ -65,17 +70,19 @@ router.post("/", function(request, response) {
  */
 router.delete("/:id", function(request, response) {
 	if (request.isAuthenticated()){
-		db.Product.destroy({
+		db.product.destroy({
 			where: {
 				id: request.params.id
 			}
 		})
-			.then( () => {
+			.then(() => {
 				response.status(200).send();
 			})
-			.catch( error => {
+			.catch(error => {
 				response.status(500).send(JSON.stringify(error));
 			});
+	} else {
+		response.status(403).send("Not authenticated, access is blocked.");
 	}
 });
 

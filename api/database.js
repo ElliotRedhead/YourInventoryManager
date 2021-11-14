@@ -25,8 +25,8 @@ const sequelize = process.env.DATABASE_URL ? new Sequelize(
 	}
 );
 
-                            
-const User = sequelize.define("User", {
+
+const user = sequelize.define("user", {
 	username: {
 		type: Sequelize.STRING,
 		allowNull: false
@@ -38,11 +38,15 @@ const User = sequelize.define("User", {
 	email: {
 		type: Sequelize.STRING,
 		allowNull: true
+	},
+	uuid: {
+		type: Sequelize.UUID,
+		allowNull: false
 	}
 });
 
 
-const Product = sequelize.define("Product", {
+const product = sequelize.define("product", {
 	name: {
 		type: Sequelize.STRING,
 		allowNull: false
@@ -67,15 +71,15 @@ const Product = sequelize.define("Product", {
 });
 
 
-User.hasMany(Product, {
+user.hasMany(product, {
 	foreignKey: {
-		name: "User.id",
+		name: "user.id",
 		allowNull: true
 	}
 });
 
 module.exports = {
 	sequelize: sequelize,
-	User: User,
-	Product: Product
+	user: user,
+	product: product
 };

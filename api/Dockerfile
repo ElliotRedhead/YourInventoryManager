@@ -1,10 +1,10 @@
 FROM node:10.16.0-alpine
-WORKDIR /usr/src/app
-COPY package*.json ./
+WORKDIR /api
+COPY package*.json /api/
 RUN npm install
-COPY . .
+COPY . /api/
 EXPOSE 5000
-CMD [ "yarn", "server", "migrate" ]
+CMD [ "yarn", "start" ]
 
 
 # docker build -t <username>/learningnode .
