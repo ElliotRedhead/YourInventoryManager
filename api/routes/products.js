@@ -10,7 +10,7 @@ router.get("/", function(request, response) {
 	if (request.isAuthenticated() && (async () => await matchUserCredentials(request.user.id, request.user.uuid))){
 		db.product.findAll({
 			where: {
-				"user.id": request.user.id
+				"user_id": request.user.id
 			}
 		})
 			.then(products => {
